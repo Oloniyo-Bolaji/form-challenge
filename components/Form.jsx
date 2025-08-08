@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import InputTooltip from "./InputTooltip";
+import { VscEye } from "react-icons/vsc";
+import { VscEyeClosed } from "react-icons/vsc";
+import { IoArrowBack } from "react-icons/io5";
+import { IoArrowForwardSharp } from "react-icons/io5";
 
 const userSchema = z
   .object({
@@ -22,16 +27,29 @@ const userSchema = z
   });
 
 const Form = ({ countries }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
+    watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(userSchema),
   });
+  const password = watch("password", "");
+
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSymbol = /[^A-Za-z0-9]/.test(password);
+  const isMinLength = password.length >= 8;
 
   const onSubmit = (data) => {
     console.log(data);
+
+    reset();
   };
 
   return (
@@ -39,9 +57,9 @@ const Form = ({ countries }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
         <div className="flex gap-[10px]">
           <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-bold">First name</label>
+            <label className="text-[13px] font-semibold">First name</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
               placeholder="First name"
               {...register("firstname")}
             />
@@ -50,9 +68,9 @@ const Form = ({ countries }) => {
             </p>
           </div>
           <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-bold">Last name</label>
+            <label className="text-[13px] font-semibold">Last name</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
               placeholder="Last name"
               {...register("lastname")}
             />
@@ -61,9 +79,14 @@ const Form = ({ countries }) => {
         </div>
 
         <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-bold">Email</label>
+          <label className="text-[13px] font-semibold flex gap-[5px] items-center">
+            <span>Email</span>
+            <span className="bg-[#e0e0e0] rounded-full w-[20px] h-[20px] p-[3px] flex items-center justify-center">
+              <InputTooltip title="Your email address" />
+            </span>
+          </label>
           <input
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
             placeholder="Email address"
             {...register("email")}
           />
@@ -71,9 +94,14 @@ const Form = ({ countries }) => {
         </div>
 
         <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-bold">Organization Name</label>
+          <label className="text-[13px] font-semibold flex gap-[5px]">
+            <span>Organization Name </span>
+            <span className="bg-[#e0e0e0] rounded-full w-[20px] h-[20px] p-[3px] flex items-center justify-center ">
+              <InputTooltip title="Organizations name" />
+            </span>
+          </label>
           <input
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
             placeholder="Organization name"
             {...register("organization_name")}
           />
@@ -84,12 +112,21 @@ const Form = ({ countries }) => {
 
         <div className="flex gap-[10px]">
           <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-bold">Category</label>
+            <label className="text-[13px] font-semibold">Country *</label>
             <select
               {...register("country")}
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+              required
+              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
               placeholder="Select"
             >
+              <option
+                value=""
+                disabled
+                selected
+                className="text-[14px] text-[#ccc]"
+              >
+                Select
+              </option>
               {countries.map((country, index) => (
                 <option key={index} value={country.name}>
                   {country.name}
@@ -100,10 +137,11 @@ const Form = ({ countries }) => {
           </div>
 
           <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-bold">Postal Code</label>
+            <label className="text-[13px] font-semibold">Postal Code *</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
+              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
               placeholder="Postal code"
+              required
               {...register("postal_code")}
             />
             <p className="text-[red] text-[12px]">
@@ -113,28 +151,85 @@ const Form = ({ countries }) => {
         </div>
 
         <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-bold">Password </label>
-          <input
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
-            placeholder="Password"
-            type="password"
-            {...register("password")}
-          />
-          <p className="text-[red] text-[12px]">{errors.password?.message}</p>
+          <label className="text-[13px] font-semibold">Password</label>
+
+          <div className="w-full relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              {...register("password")}
+              className="w-full border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] pr-10 outline-0"
+            />
+
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-[20px]"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <VscEyeClosed /> : <VscEye />}
+            </button>
+          </div>
+
+          <div className="flex gap-[15px] items-center text-[13px] list-none">
+            {isMinLength && (
+              <li className="flex items-center gap-[5px]">
+                <span className="text-[red] font-bold">✓</span>8 characters
+              </li>
+            )}
+            {hasNumber && (
+              <li className="flex items-center gap-[5px]">
+                <span className="text-[red] font-bold">✓</span>number
+              </li>
+            )}
+            {hasSymbol && (
+              <li className="flex items-center gap-[5px]">
+                <span className="text-[red] font-bold">✓</span>symbol
+              </li>
+            )}
+            {hasUppercase && (
+              <li className="flex items-center gap-[5px]">
+                <span className="text-[red] font-bold">✓</span>uppercase letter
+              </li>
+            )}
+          </div>
         </div>
+
         <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-bold">Confirm Password</label>
-          <input
-          type="password"
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[15px] p-[8px] outline-0"
-            placeholder="Confirm Password"
-            {...register("confirm_password")}
-          />
+          <label className="text-[13px] font-semibold">Confirm Password</label>
+          <div className="w-full relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              {...register("confirm_password")}
+              className="w-full border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] pr-10 outline-0"
+            />
+            <button
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-[20px] "
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <VscEyeClosed /> : <VscEye />}
+            </button>
+          </div>
           <p className="text-[red] text-[12px]">
             {errors.confirm_password?.message}
           </p>
         </div>
       </form>
+      <div className="flex justify-between">
+        <button className="flex gap-[5px] text-[13px] justify-center items-center font-semibold bg-[#f7f7f7] px-[15px] py-[5px] rounded-[5px]">
+          <span>
+            <IoArrowBack />
+          </span>
+          <span>Back</span>
+        </button>
+        <button className="flex gap-[5px] text-[13px] text-white justify-center items-center font-semibold bg-[#888] px-[15px] py-[5px] rounded-[5px]">
+          <span>Continue</span>
+          <span>
+            <IoArrowForwardSharp />
+          </span>
+        </button>
+      </div>
     </div>
   );
 };
