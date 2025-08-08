@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@utility input-style {
+  @apply border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0;
+}
+
+@utility label-style {
+  @apply text-[13px] font-semibold;
+}
+
+@utility tooltip {
+  @apply bg-[#e0e0e0] rounded-full w-[20px] h-[20px] p-[3px] flex items-center justify-center;
+}
+
+@utility flex-gap {
+  @apply flex flex-col gap-[10px];
+}

@@ -8,6 +8,9 @@ import { VscEyeClosed } from "react-icons/vsc";
 import { IoArrowBack } from "react-icons/io5";
 import { IoArrowForwardSharp } from "react-icons/io5";
 
+{
+  /** */
+}
 const userSchema = z
   .object({
     firstname: z.string().min(1, "First name is required"),
@@ -56,10 +59,10 @@ const Form = ({ countries }) => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
         <div className="flex gap-[10px]">
-          <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-semibold">First name</label>
+          <div className="sm:w-[50%] w-full flex-gap">
+            <label className="label-style">First name</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+              className="input-style"
               placeholder="First name"
               {...register("firstname")}
             />
@@ -67,10 +70,10 @@ const Form = ({ countries }) => {
               {errors.firstname?.message}
             </p>
           </div>
-          <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-semibold">Last name</label>
+          <div className="sm:w-[50%] w-full flex-gap">
+            <label className="label-style">Last name</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+              className="input-style"
               placeholder="Last name"
               {...register("lastname")}
             />
@@ -78,30 +81,30 @@ const Form = ({ countries }) => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-semibold flex gap-[5px] items-center">
+        <div className="w-full flex-gap">
+          <label className="label-style flex gap-[5px] items-center">
             <span>Email</span>
-            <span className="bg-[#e0e0e0] rounded-full w-[20px] h-[20px] p-[3px] flex items-center justify-center">
+            <span className="tooltip">
               <InputTooltip title="Your email address" />
             </span>
           </label>
           <input
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+            className="input-style"
             placeholder="Email address"
             {...register("email")}
           />
           <p className="text-[red] text-[12px]">{errors.email?.message}</p>
         </div>
 
-        <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-semibold flex gap-[5px]">
+        <div className="w-full flex-gap">
+          <label className="label-style flex gap-[5px]">
             <span>Organization Name </span>
-            <span className="bg-[#e0e0e0] rounded-full w-[20px] h-[20px] p-[3px] flex items-center justify-center ">
+            <span className="tooltip ">
               <InputTooltip title="Organizations name" />
             </span>
           </label>
           <input
-            className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+            className="input-style"
             placeholder="Organization name"
             {...register("organization_name")}
           />
@@ -111,12 +114,12 @@ const Form = ({ countries }) => {
         </div>
 
         <div className="flex gap-[10px]">
-          <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-semibold">Country *</label>
+          <div className="sm:w-[50%] w-full flex-gap">
+            <label className="label-style">Country *</label>
             <select
               {...register("country")}
               required
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+              className="input-style"
               placeholder="Select"
             >
               <option
@@ -136,10 +139,10 @@ const Form = ({ countries }) => {
             <p className="text-[red] text-[12px]">{errors.country?.message}</p>
           </div>
 
-          <div className="sm:w-[50%] w-full flex flex-col gap-[10px]">
-            <label className="text-[13px] font-semibold">Postal Code *</label>
+          <div className="sm:w-[50%] w-full flex-gap">
+            <label className="label-style">Postal Code *</label>
             <input
-              className="border-[1.5px] border-[#ccc] rounded-[8px] placeholder:text-[14px] p-[8px] outline-0"
+              className="input-style"
               placeholder="Postal code"
               required
               {...register("postal_code")}
@@ -150,8 +153,8 @@ const Form = ({ countries }) => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-semibold">Password</label>
+        <div className="w-full flex-gap">
+          <label className="label-style">Password</label>
 
           <div className="w-full relative">
             <input
@@ -171,31 +174,40 @@ const Form = ({ countries }) => {
           </div>
 
           <div className="flex gap-[15px] items-center text-[13px] list-none">
-            {isMinLength && (
-              <li className="flex items-center gap-[5px]">
-                <span className="text-[red] font-bold">✓</span>8 characters
-              </li>
-            )}
-            {hasNumber && (
-              <li className="flex items-center gap-[5px]">
-                <span className="text-[red] font-bold">✓</span>number
-              </li>
-            )}
-            {hasSymbol && (
-              <li className="flex items-center gap-[5px]">
-                <span className="text-[red] font-bold">✓</span>symbol
-              </li>
-            )}
-            {hasUppercase && (
-              <li className="flex items-center gap-[5px]">
-                <span className="text-[red] font-bold">✓</span>uppercase letter
-              </li>
-            )}
+            <li className="flex items-center gap-[5px] ">
+              {isMinLength && <span className="text-[green] font-bold">✓</span>}
+              <span className={isMinLength ? "text-black" : "text-[#ccc]"}>
+                8 characters
+              </span>
+            </li>
+
+            <li className="flex items-center gap-[5px]">
+              {hasNumber && <span className="text-[green] font-bold">✓</span>}
+              <span className={hasNumber ? "text-black" : "text-[#ccc]"}>
+                number
+              </span>
+            </li>
+
+            <li className="flex items-center gap-[5px]">
+              {hasSymbol && <span className="text-[green] font-bold">✓</span>}
+              <span className={hasSymbol ? "text-black" : "text-[#ccc]"}>
+                symbol
+              </span>
+            </li>
+
+            <li className="flex items-center gap-[5px]">
+              {hasUppercase && (
+                <span className="text-[green] font-bold">✓</span>
+              )}
+              <span className={hasUppercase ? "text-black" : "text-[#ccc]"}>
+                uppercase letter
+              </span>
+            </li>
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-[10px]">
-          <label className="text-[13px] font-semibold">Confirm Password</label>
+        <div className="w-full flex-gap">
+          <label className="label-style">Confirm Password</label>
           <div className="w-full relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
