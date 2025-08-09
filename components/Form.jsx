@@ -57,7 +57,7 @@ const Form = ({ countries }) => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
         <div className="flex gap-[10px] sm:flex-row flex-col">
           <div className="sm:w-[50%] w-full flex-gap">
