@@ -8,9 +8,7 @@ import { VscEyeClosed } from "react-icons/vsc";
 import { IoArrowBack } from "react-icons/io5";
 import { IoArrowForwardSharp } from "react-icons/io5";
 
-{
-  /** */
-}
+{/**zod schema for user details */}
 const userSchema = z
   .object({
     firstname: z.string().min(1, "First name is required"),
@@ -30,6 +28,7 @@ const userSchema = z
   });
 
 const Form = ({ countries }) => {
+  {/**states for revealing passwords */}
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,6 +41,7 @@ const Form = ({ countries }) => {
   } = useForm({
     resolver: zodResolver(userSchema),
   });
+  {/**password validations */}
   const password = watch("password", "");
 
   const hasUppercase = /[A-Z]/.test(password);
@@ -49,6 +49,7 @@ const Form = ({ countries }) => {
   const hasSymbol = /[^A-Za-z0-9]/.test(password);
   const isMinLength = password.length >= 8;
 
+  {/**function to submit data on button click */}
   const onSubmit = (data) => {
     console.log(data);
 
@@ -58,7 +59,7 @@ const Form = ({ countries }) => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col">
-        <div className="flex gap-[10px]">
+        <div className="flex gap-[10px] sm:flex-row flex-col">
           <div className="sm:w-[50%] w-full flex-gap">
             <label className="label-style">First name</label>
             <input
@@ -113,7 +114,7 @@ const Form = ({ countries }) => {
           </p>
         </div>
 
-        <div className="flex gap-[10px]">
+        <div className="flex gap-[10px] sm:flex-row flex-col">
           <div className="sm:w-[50%] w-full flex-gap">
             <label className="label-style">Country *</label>
             <select
@@ -228,6 +229,7 @@ const Form = ({ countries }) => {
           </p>
         </div>
       </form>
+      {/**control buttons */}
       <div className="flex justify-between">
         <button className="flex gap-[5px] text-[13px] justify-center items-center font-semibold bg-[#f7f7f7] px-[15px] py-[5px] rounded-[5px]">
           <span>

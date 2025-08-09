@@ -22,7 +22,7 @@ function App() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center sm:py-[100px] py-[20px] px-[30px]">
+    <div className="flex items-center justify-center py-[40px] sm:py-[100px] ">
       <Form countries={countries}/>
     </div>
   );
